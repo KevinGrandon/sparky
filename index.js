@@ -32,9 +32,21 @@ Sparky.prototype = {
 			}
 		});
 	},
+
+	/**
+	 * Formats values to expected values,
+	 * 1, true -> 'HIGH'
+	 * 0, false -> 'LOW'
+	 */
+	formatDigitalValue: function(value) {
+		return value ? 'HIGH' : 'LOW';
+	},
+
 	digitalWrite: function(pin, value) {
+		value = this.formatDigitalValue(value);
 		this._command('digitalWrite', pin, value);
 	},
+
 	analogWrite: function(pin, value) {
 		this._command('analogWrite', pin, value);
 	}
