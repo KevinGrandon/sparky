@@ -1,5 +1,5 @@
-var exec = require('child_process').exec;
-var child;
+var exec = require('child_process').exec
+var child
 
 function debug() {
 	//console.log.apply(console, arguments)
@@ -16,24 +16,32 @@ function Sparky(config) {
 	}
 
 	this.config = config
+
+	this._throttle = 0
 }
 
 Sparky.prototype = {
 	_command: function(command, pin, value, callback) {
-		command = command.toLowerCase();
-		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + (value ? ',' + value : '');
-		debug('Running command: ', command);
+
+		if (this._throttle > 0 && Date.now() < this._throttle) {
+			return false
+		}
+		this._throttle = 0
+
+		command = command.toLowerCase()
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + (value ? ',' + value : '')
+		debug('Running command: ', command)
 		child = exec(command,
 			function (error, stdout, stderr) {
-			debug('stdout: ' + stdout);
-			debug('stderr: ' + stderr);
+			debug('stdout: ' + stdout)
+			debug('stderr: ' + stderr)
 			if (error !== null) {
-			  debug('exec error: ' + error);
+			  debug('exec error: ' + error)
 			}
 			if (callback) {
-				callback(JSON.parse(stdout).return_value);
+				callback(JSON.parse(stdout).return_value)
 			}
-		});
+		})
 	},
 
 	/**
@@ -42,24 +50,36 @@ Sparky.prototype = {
 	 * 0, false -> 'LOW'
 	 */
 	formatDigitalValue: function(value) {
-		return value ? 'HIGH' : 'LOW';
+		return value ? 'HIGH' : 'LOW'
 	},
 
 	digitalWrite: function(pin, value) {
-		value = this.formatDigitalValue(value);
-		this._command('digitalWrite', pin, value);
+		value = this.formatDigitalValue(value)
+		this._command('digitalWrite', pin, value)
 	},
 
 	analogWrite: function(pin, value) {
-		this._command('analogWrite', pin, value);
+		this._command('analogWrite', pin, value)
 	},
 
 	digitalRead: function(pin, callback) {
-		this._command('digitalRead', pin, null, callback);
+		this._command('digitalRead', pin, null, callback)
 	},
 
 	analogRead: function(pin, callback) {
-		this._command('analogRead', pin, null, callback);
+		this._command('analogRead', pin, null, callback)
+	},
+
+	/**
+	 * Only run the next command if we have not written to the same pin based on ms
+	 * @param {Integer} Number of seconds to throttle
+	 */
+	throttle: function(ms) {
+		// Set throttle if we don't have one set
+		if (this._throttle === 0) {
+			this._throttle = Date.now() + ms
+		}
+		return this
 	}
 }
 
