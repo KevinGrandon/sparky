@@ -19,9 +19,9 @@ function Sparky(config) {
 }
 
 Sparky.prototype = {
-	_command: function(command, pin, value) {
+	_command: function(command, pin, value, callback) {
 		command = command.toLowerCase();
-		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + ',' + value;
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + (value ? ',' + value : '');
 		debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
@@ -29,6 +29,9 @@ Sparky.prototype = {
 			debug('stderr: ' + stderr);
 			if (error !== null) {
 			  debug('exec error: ' + error);
+			}
+			if (callback) {
+				callback(JSON.parse(stdout).return_value);
 			}
 		});
 	},
@@ -49,6 +52,14 @@ Sparky.prototype = {
 
 	analogWrite: function(pin, value) {
 		this._command('analogWrite', pin, value);
+	},
+
+	digitalRead: function(pin, callback) {
+		this._command('digitalRead', pin, null, callback);
+	},
+
+	analogRead: function(pin, callback) {
+		this._command('analogRead', pin, null, callback);
 	}
 }
 
