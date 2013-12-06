@@ -20,7 +20,8 @@ function Sparky(config) {
 
 Sparky.prototype = {
 	_command: function(command, pin, value) {
-		var command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + ',' + value;
+		command = command.toLowerCase();
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + ',' + value;
 		debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
