@@ -1,0 +1,28 @@
+{
+  "name": "sparky",
+  "description": "Simple sparkcore interface.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kevingrandon/sparky",
+  "author": {
+    "name": "Kevin Grandon",
+    "email": "kevingrandon@yahoo.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kevingrandon/sparky.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kevingrandon/sparky/issues"
+  },
+  "licenses": [
+    {
+      "type": "MPL"
+    }
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "keywords": [],
+  "readmeFilename": "README.md"
+}
