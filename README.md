@@ -1,16 +1,15 @@
 Sparky
------------------------------
+=============================
 Sparky is a simple node.js library for communicating with a Spark core.
 
 Installation
-=============================
+-----------------------------
 ```
 npm install sparky
 ```
 
 Usage
-=============================
-
+-----------------------------
 ```
 var Sparky = require('sparky').Sparky
 
