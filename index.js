@@ -1,6 +1,10 @@
 var exec = require('child_process').exec;
 var child;
 
+function debug() {
+	//console.log.apply(console, arguments)
+}
+
 function Sparky(config) {
 
 	if (!config.deviceId) {
@@ -17,12 +21,13 @@ function Sparky(config) {
 Sparky.prototype = {
 	_command: function(command, pin, value) {
 		var command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + ',' + value;
+		debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
-			//console.log('stdout: ' + stdout);
-			//console.log('stderr: ' + stderr);
+			debug('stdout: ' + stdout);
+			debug('stderr: ' + stderr);
 			if (error !== null) {
-			  console.log('exec error: ' + error);
+			  debug('exec error: ' + error);
 			}
 		});
 	},
