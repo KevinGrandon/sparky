@@ -54,7 +54,12 @@ Sparky.prototype = {
 				debug('exec error: ' + error);
 			}
 			if (callback) {
-				callback(JSON.parse(stdout).return_value);
+				try {
+					callback(JSON.parse(stdout).return_value);
+				}
+				catch (err) {
+					callback(undefined);
+				}
 			}
 		});
 	},
