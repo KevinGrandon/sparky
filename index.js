@@ -44,7 +44,7 @@ Sparky.prototype = {
 		this._throttle = 0;
 
 		command = command.toLowerCase();
-		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + params;
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d args=' + params;
 		debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
