@@ -38,6 +38,8 @@ function Sparky(config) {
 Sparky.prototype = {
 	_command: function(command, params, callback) {
 
+		params = params || '';
+
 		// Set a throttle if no throttle is set for the current args
 		if (this.nextThrottle && !this.pinThrottle[params]) {
 			this.pinThrottle[params] = Date.now() + this.nextThrottle;
