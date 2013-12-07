@@ -21,7 +21,7 @@ function Sparky(config) {
 }
 
 Sparky.prototype = {
-	_command: function(command, pin, value, callback) {
+	_command: function(command, params, callback) {
 
 		if (this._throttle > 0 && Date.now() < this._throttle) {
 			return false
@@ -29,7 +29,7 @@ Sparky.prototype = {
 		this._throttle = 0
 
 		command = command.toLowerCase()
-		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + pin + (value ? ',' + value : '')
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d params=' + params
 		debug('Running command: ', command)
 		child = exec(command,
 			function (error, stdout, stderr) {
@@ -55,19 +55,26 @@ Sparky.prototype = {
 
 	digitalWrite: function(pin, value) {
 		value = this.formatDigitalValue(value)
-		this._command('digitalWrite', pin, value)
+		this._command('digitalWrite', pin + ',' + value)
 	},
 
 	analogWrite: function(pin, value) {
-		this._command('analogWrite', pin, value)
+		this._command('analogWrite', pin + ',' + value)
 	},
 
 	digitalRead: function(pin, callback) {
-		this._command('digitalRead', pin, null, callback)
+		this._command('digitalRead', pin, callback)
 	},
 
 	analogRead: function(pin, callback) {
-		this._command('analogRead', pin, null, callback)
+		this._command('analogRead', pin, callback)
+	},
+
+	/**
+	 * Runs one a custom spark core command
+	 */
+	run: function(pin, params, callback) {
+		this._command('analogRead', params, callback)
 	},
 
 	/**

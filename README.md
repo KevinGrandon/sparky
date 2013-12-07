@@ -10,6 +10,8 @@ npm install sparky
 
 Usage
 -----------------------------
+Turn the built-in LED on.
+
 ```
 var Sparky = require('sparky').Sparky
 
@@ -20,7 +22,7 @@ var sparky = new Sparky({
 sparky.digitalWrite('D7', 'HIGH');
 ```
 
-Blinking the built-in LED
+Blinking the built-in LED.
 
 ```
 var Sparky = require('sparky').Sparky
@@ -33,3 +35,15 @@ var val = 0;
 	setTimeout(toggle, 1000);
 })();
 ```
+
+Run a custom command from your SparkCore firmware.
+```
+var Sparky = require('sparky').Sparky
+
+var sparky = new Sparky({
+	deviceId: 'your device id',
+	token: 'your access token',
+})
+sparky.run('MyCustomFunction', 'what,ever,you,want', callback);
+```
+
