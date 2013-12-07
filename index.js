@@ -2,7 +2,7 @@ var exec = require('child_process').exec;
 var child;
 
 function debug() {
-	//console.log.apply(console, arguments)
+	console.log.apply(console, arguments)
 }
 
 function Sparky(config) {
@@ -32,16 +32,26 @@ function Sparky(config) {
 
 	this.config = config;
 
-	this._throttle = 0;
+	this.pinThrottle = {};
 }
 
 Sparky.prototype = {
 	_command: function(command, params, callback) {
 
-		if (this._throttle > 0 && Date.now() < this._throttle) {
-			return false;
+		params = params || '';
+
+		// Set a throttle if no throttle is set for the current args
+		if (this.nextThrottle && !this.pinThrottle[params]) {
+			this.pinThrottle[params] = Date.now() + this.nextThrottle;
+			delete this.nextThrottle;
 		}
-		this._throttle = 0;
+
+		// Return early if we have a throttle for this pin combination
+		if (this.pinThrottle[params] && Date.now() < this.pinThrottle[params]) {
+			return false;
+		} else  if(this.pinThrottle[params]) {
+			delete this.pinThrottle[params];
+		}
 
 		command = command.toLowerCase();
 		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d args=' + params;
@@ -98,16 +108,15 @@ Sparky.prototype = {
 	},
 
 	/**
-	 * Only run the next command if we have not written to the same pin based on ms
+	 * Do not send the request with the same args to the server within x ms
 	 * @param {Integer} Number of seconds to throttle
 	 */
 	throttle: function(ms) {
-		// Set throttle if we don't have one set
-		if (this._throttle === 0) {
-			this._throttle = Date.now() + ms;
-		}
+		// Set the next throttle value
+		// The logic to set this actually happens whenever we send the next command
+		this.nextThrottle = ms;
 		return this;
 	}
 };
 
-exports.Sparky = Sparky;
+module.exports = Sparky;

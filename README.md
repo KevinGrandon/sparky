@@ -13,7 +13,7 @@ Usage
 Turn the built-in LED on.
 
 ```
-var Sparky = require('sparky').Sparky
+var Sparky = require('sparky')
 
 var sparky = new Sparky({
 	deviceId: 'your device id',
@@ -25,7 +25,7 @@ sparky.digitalWrite('D7', 'HIGH');
 Blinking the built-in LED.
 
 ```
-var Sparky = require('sparky').Sparky
+var Sparky = require('sparky')
 
 var sparky = new Sparky(config);
 var val = 0;
@@ -38,7 +38,7 @@ var val = 0;
 
 Run a custom command from your SparkCore firmware.
 ```
-var Sparky = require('sparky').Sparky
+var Sparky = require('sparky')
 
 var sparky = new Sparky({
 	deviceId: 'your device id',
