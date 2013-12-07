@@ -105,4 +105,4 @@ Sparky.prototype = {
 	}
 };
 
-exports.Sparky = Sparky;
+module.exports = Sparky;
