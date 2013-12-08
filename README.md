@@ -1,6 +1,6 @@
 Sparky
 =============================
-Sparky is a simple node.js library for communicating with a Spark core.
+Sparky is a simple node.js library for communicating with a Spark core. Sparky wraps the four default methods (analogRead, analogWrite, digitalRead, digitalWrite), and has a run method for any custom firmware methods on your SparkCore.
 
 Installation
 -----------------------------
