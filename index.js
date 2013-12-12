@@ -1,10 +1,6 @@
 var exec = require('child_process').exec;
 var child;
 
-function debug() {
-	console.log.apply(console, arguments)
-}
-
 function Sparky(config) {
 
 	// If no config obj exists, make one
@@ -36,6 +32,13 @@ function Sparky(config) {
 }
 
 Sparky.prototype = {
+
+	debug: function() {
+		if (this.config.debug) {
+			console.log.apply(console, arguments)
+		}
+	},
+
 	_command: function(command, params, callback) {
 
 		params = params || '';
@@ -55,13 +58,13 @@ Sparky.prototype = {
 
 		command = command.toLowerCase();
 		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d args=' + params;
-		debug('Running command: ', command);
+		this.debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
-			debug('stdout: ' + stdout);
-			debug('stderr: ' + stderr);
+			this.debug('stdout: ' + stdout);
+			this.debug('stderr: ' + stderr);
 			if (error !== null) {
-				debug('exec error: ' + error);
+				this.debug('exec error: ' + error);
 			}
 			if (callback) {
 				try {
@@ -71,7 +74,7 @@ Sparky.prototype = {
 					callback(undefined);
 				}
 			}
-		});
+		}.bind(this));
 	},
 
 	/**
