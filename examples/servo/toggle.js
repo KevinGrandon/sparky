@@ -1,3 +1,7 @@
+/**
+ * Toggles a servo between min and max bounds.
+ * This works for a continuous rotation servo as well as a regular servo.
+ */
 var Sparky = require('sparky')
 var config = require('./config')
 
