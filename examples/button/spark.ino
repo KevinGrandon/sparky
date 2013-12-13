@@ -13,6 +13,5 @@ void loop() {
 
 int laststate(String command)
 {
-	return -1;
-	//return buttonState;
+	return buttonState;
 }
