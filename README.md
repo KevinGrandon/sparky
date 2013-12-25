@@ -15,11 +15,11 @@ Turn the built-in LED on.
 ```
 var Sparky = require('sparky')
 
-var sparky = new Sparky({
+var core1 = new Sparky({
 	deviceId: 'your device id',
 	token: 'your access token',
 })
-sparky.digitalWrite('D7', 'HIGH');
+core1.digitalWrite('D7', 'HIGH');
 ```
 
 Blinking the built-in LED.
@@ -27,11 +27,11 @@ Blinking the built-in LED.
 ```
 var Sparky = require('sparky')
 
-var sparky = new Sparky(config);
+var core1 = new Sparky(config);
 var val = 0;
 (function toggle() {
 	val = 1 - val;
-	sparky.digitalWrite('D7', val);
+	core1.digitalWrite('D7', val);
 	setTimeout(toggle, 1000);
 })();
 ```
@@ -40,10 +40,24 @@ Run a custom command from your SparkCore firmware.
 ```
 var Sparky = require('sparky')
 
-var sparky = new Sparky({
+var core1 = new Sparky({
 	deviceId: 'your device id',
 	token: 'your access token',
 })
-sparky.run('MyCustomFunction', 'what,ever,you,want', callback);
+core1.run('MyCustomFunction', 'what,ever,you,want', callback);
+```
+
+Read a variable from your SparkCore. See the examples/read_var code for an example sketch.
+```
+var Sparky = require('sparky')
+
+var core1 = new Sparky({
+	deviceId: 'your device id',
+	token: 'your access token',
+})
+
+core1.get('MyCustomVariable', function(response) {
+	// Full response of the SparkCore API resides in the first argument
+});
 ```
 

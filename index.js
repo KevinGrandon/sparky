@@ -111,6 +111,30 @@ Sparky.prototype = {
 	},
 
 	/**
+	 * Gets a variable from the spark core
+	 */
+	get: function(command, callback) {
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '?access_token=' + this.config.token;
+		this.debug('Running command: ', command);
+		child = exec(command,
+			function (error, stdout, stderr) {
+			this.debug('stdout: ' + stdout);
+			this.debug('stderr: ' + stderr);
+			if (error !== null) {
+				this.debug('exec error: ' + error);
+			}
+			if (callback) {
+				try {
+					callback(JSON.parse(stdout));
+				}
+				catch (err) {
+					callback(undefined);
+				}
+			}
+		}.bind(this));
+	},
+
+	/**
 	 * Do not send the request with the same args to the server within x ms
 	 * @param {Integer} Number of seconds to throttle
 	 */
