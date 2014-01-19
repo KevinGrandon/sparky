@@ -56,8 +56,7 @@ Sparky.prototype = {
 			delete this.pinThrottle[params];
 		}
 
-		command = command.toLowerCase();
-		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d args=' + params;
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d "args=' + params+'"';
 		this.debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
