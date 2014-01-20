@@ -56,8 +56,7 @@ Sparky.prototype = {
 			delete this.pinThrottle[params];
 		}
 
-		command = command.toLowerCase();
-		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d args=' + params;
+		command = 'curl https://api.spark.io/v1/devices/' + this.config.deviceId + '/' + command + '   -d access_token=' + this.config.token + ' -d "args=' + params+'"';
 		this.debug('Running command: ', command);
 		child = exec(command,
 			function (error, stdout, stderr) {
@@ -83,24 +82,28 @@ Sparky.prototype = {
 	 * 0, false -> 'LOW'
 	 */
 	formatDigitalValue: function(value) {
-		return value ? 'HIGH' : 'LOW';
+        if (value == 'HIGH' || value == 'LOW') {
+            return value;
+        } else {
+            return value ? 'HIGH' : 'LOW';
+        }
 	},
 
 	digitalWrite: function(pin, value) {
 		value = this.formatDigitalValue(value);
-		this._command('digitalWrite', pin + ',' + value);
+		this._command('digitalwrite', pin + ',' + value);
 	},
 
 	analogWrite: function(pin, value) {
-		this._command('analogWrite', pin + ',' + value);
+		this._command('analogwrite', pin + ',' + value);
 	},
 
 	digitalRead: function(pin, callback) {
-		this._command('digitalRead', pin, callback);
+		this._command('digitalread', pin, callback);
 	},
 
 	analogRead: function(pin, callback) {
-		this._command('analogRead', pin, callback);
+		this._command('analogread', pin, callback);
 	},
 
 	/**
