@@ -61,3 +61,8 @@ core1.get('MyCustomVariable', function(response) {
 });
 ```
 
+Setup
+-----------------------------
+In addition to the lightweight communication layer, Sparky comes with sparky.ino. You can upload this as firmware to the spark core to fully utilize the Sparky library.
+
+The examples folder shows you what's possible after you upload this frimware.
